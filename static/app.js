@@ -501,17 +501,17 @@ detailBackdrop.addEventListener("click", closeDetailPane);
 
 async function toggleDone(task) {
   const action = task.done ? "undone" : "done";
-  await fetch(`/api/tasks/${task.id}/${action}`, { method: "POST" });
+  await fetch(`/api/tasks/${task.id}/${action}`, { method: "POST", headers: { "Content-Type": "application/json" } });
   await fetchTasks();
 }
 
 async function toggleCanceled(task) {
   const action = task.canceled ? "restore" : "cancel";
-  await fetch(`/api/tasks/${task.id}/${action}`, { method: "POST" });
+  await fetch(`/api/tasks/${task.id}/${action}`, { method: "POST", headers: { "Content-Type": "application/json" } });
   showToast(task.canceled ? "Task restored" : "Task canceled", task.canceled ? null : {
     label: "Undo",
     onClick: async () => {
-      await fetch(`/api/tasks/${task.id}/restore`, { method: "POST" });
+      await fetch(`/api/tasks/${task.id}/restore`, { method: "POST", headers: { "Content-Type": "application/json" } });
       await fetchTasks();
     },
   });

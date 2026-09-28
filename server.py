@@ -144,6 +144,21 @@ class Handler(BaseHTTPRequestHandler):
         except (json.JSONDecodeError, UnicodeDecodeError) as exc:
             raise ValueError("malformed JSON body") from exc
 
+    # Block DNS-rebinding and cross-site requests: only the app's own origin may talk to the server.
+    def _request_allowed(self):
+        port = self.server.server_address[1]
+        allowed_hosts = {f"localhost:{port}", f"127.0.0.1:{port}"}
+        if self.headers.get("Host", "") not in allowed_hosts:
+            return False
+        origin = self.headers.get("Origin")
+        if origin is not None and origin not in {f"http://{h}" for h in allowed_hosts}:
+            return False
+        if self.command in ("POST", "PUT"):
+            ctype = self.headers.get("Content-Type", "").split(";")[0].strip().lower()
+            if ctype != "application/json":
+                return False
+        return True
+
     def _serve_static(self, path):
         if path == "/":
             path = "/index.html"
@@ -186,6 +201,12 @@ class Handler(BaseHTTPRequestHandler):
         self._safe_dispatch(self._handle_DELETE)
 
     def _safe_dispatch(self, handler_fn):
+        if not self._request_allowed():
+            try:
+                self._send_json({"error": "forbidden"}, 403)
+            except Exception:
+                pass
+            return
         try:
             handler_fn()
         except (ValueError, KeyError) as exc:
