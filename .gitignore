@@ -1,0 +1,8 @@
+# Logs
+*.log
+# Local backups
+backups/
+# Python / OS
+__pycache__/
+*.pyc
+.DS_Store

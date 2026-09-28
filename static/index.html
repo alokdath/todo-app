@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alok's Todos</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 20 20%22><rect width=%2220%22 height=%2220%22 rx=%224%22 fill=%22%234f6df5%22/><path d=%22M5 10.5l3.2 3.2L15 7%22 stroke=%22white%22 stroke-width=%222.2%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="shell">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <h1><span class="logo-icon" id="logo-icon"></span> Alok's Todos</h1>
+        <button id="theme-toggle" class="theme-toggle-btn" title="Toggle dark mode"></button>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Filter</div>
+        <div class="filters-vertical" id="filter-list">
+          <button class="filter-btn active" data-filter="pending">Pending</button>
+          <button class="filter-btn" data-filter="today">Today</button>
+          <button class="filter-btn" data-filter="overdue">Overdue</button>
+          <button class="filter-btn" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="done">Done</button>
+          <button class="filter-btn" data-filter="canceled">Canceled</button>
+        </div>
+      </div>
+
+      <footer class="signature-banner">Created and maintained by Alok Dath ©</footer>
+    </nav>
+
+    <section id="todos-list-pane" class="list-pane">
+      <div class="toolbar-row">
+        <div class="search-wrap">
+          <span class="search-icon" id="task-search-icon"></span>
+          <input id="task-search" type="search" class="search-box" placeholder="Search tasks...">
+        </div>
+      </div>
+      <div class="toolbar-row">
+        <select id="task-sort" class="sort-select" title="Sort by">
+          <option value="default">Sort: Due date</option>
+          <option value="priority">Sort: Priority</option>
+          <option value="alpha">Sort: A–Z</option>
+        </select>
+        <button type="button" class="btn-primary list-new-btn" id="task-new-btn">+ New Task</button>
+      </div>
+
+      <ul id="task-list" class="item-list"></ul>
+      <p id="empty-msg" class="empty" hidden>No tasks here.</p>
+    </section>
+
+    <section id="task-detail-pane" class="detail-pane"></section>
+    <div id="detail-backdrop" class="detail-backdrop" hidden></div>
+  </div>
+
+  <div id="toast-container" class="toast-container" aria-live="polite" role="status"></div>
+
+  <div id="confirm-modal" class="confirm-overlay" hidden>
+    <div class="confirm-box">
+      <p id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button id="confirm-cancel" class="btn-secondary">Cancel</button>
+        <button id="confirm-ok" class="btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/icons.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
